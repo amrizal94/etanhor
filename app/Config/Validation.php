@@ -1,4 +1,6 @@
-<?php namespace Config;
+<?php
+
+namespace Config;
 
 class Validation
 {
@@ -28,6 +30,19 @@ class Validation
 	public $templates = [
 		'list'   => 'CodeIgniter\Validation\Views\list',
 		'single' => 'CodeIgniter\Validation\Views\single',
+	];
+
+	public $auth = [
+		'username' => 'required|trim',
+		'password' => 'required|trim'
+	];
+	public $auth_errors = [
+		'username' => [
+			'required'      		=> 'Username is required'
+		],
+		'password' => [
+			'required'				=> 'Password is required'
+		]
 	];
 
 	//--------------------------------------------------------------------
