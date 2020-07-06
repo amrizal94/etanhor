@@ -16,6 +16,7 @@ namespace App\Controllers;
  */
 
 use CodeIgniter\Controller;
+use App\Models\AuthModel;
 
 class BaseController extends Controller
 {
@@ -42,17 +43,32 @@ class BaseController extends Controller
 		//--------------------------------------------------------------------
 		// E.g.:
 		// $this->session = \Config\Services::session();
-
+		$this->AuthModel = new AuthModel();
 		$this->Group = "Lasbon Technology Indonesia | IT Solution For Your Bussines";
-		// dd(session()->getTempdata('token'));
-		// if (session()->getTempdata()) {
-		// $data = [
-		// 	'username' => session()->get('username'),
-		// 	'token' => session()->get('token'),
-		// 	'last_login' => session()->get('last_login')
-		// ];
-		// $this->Sesi = session()->getTempdata();
-		// dd($this->Sesi);
-		// }
+		helper('date');
+		// <--Vertifikasi login -->
+		if (session()->getTempdata()) {
+			$this->sesi = session()->getTempdata();
+		} else {
+			$this->sesi = false;
+		}
+		if (!$this->sesi) {
+			session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Please Login</b></div>');
+			$this->sesi = 400;
+		} else {
+			$cek = $this->AuthModel->get_user($this->sesi['username']);
+			// dd($cek);
+			if ($cek) {
+				$cek = $cek['token'];
+				if (!$cek == $this->sesi['token']) {
+					session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Please Login</b></div>');
+					$this->sesi = 400;
+				}
+			} else {
+				session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Username is not registered!</b></div>');
+				$this->sesi = 400;
+			}
+		}
+		// <--Vertifikasi login -->
 	}
 }

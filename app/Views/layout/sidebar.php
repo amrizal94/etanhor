@@ -43,7 +43,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="../../index.html" class="nav-link">
+              <a href="/Ajuan" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
                 <p>Ajuan</p>
                 <span class="badge badge-info right">2</span>
@@ -66,31 +66,36 @@
           </ul>
         </li>
         <li class="nav-header">USER</li>
-        <li class="nav-item">
-          <a href="../calendar.html" class="nav-link">
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
             <i class="nav-icon far fa-user"></i>
+            <span class="badge badge-info right">10</span>
             <p>
-              User
-              <span class="badge badge-info right">7</span>
+              USER
+              <i class="right fas fa-angle-left"></i>
             </p>
           </a>
-        </li>
-        <!-- <li class="nav-item">
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="../calendar.html" class="nav-link">
+                <i class="nav-icon far fa-user"></i>
+                <p>
+                  User
+                  <span class="badge badge-info right">7</span>
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="../gallery.html" class="nav-link">
                 <i class="nav-icon fas fa-lock"></i>
                 <p>
-                  Forgot Password
+                  Recovery Password
                 </p>
               </a>
-            </li> -->
-        <li class="nav-item">
-          <a href="../gallery.html" class="nav-link">
-            <i class="nav-icon fas fa-lock"></i>
-            <p>
-              Recovery Password
-            </p>
-          </a>
+            </li>
+          </ul>
         </li>
+
         <li class="nav-item">
           <a href="#" class="nav-link" id="logout">
             <i class="nav-icon fas fa-sign-out-alt"></i>

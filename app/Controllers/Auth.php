@@ -17,7 +17,7 @@ class Auth extends BaseController
     $this->AuthModel = new AuthModel();
 
     $this->data =  [
-      'title' => 'LOGIN',
+      'title' => 'Login',
       'body' => 'login-page'
     ];
     if (session()->getTempdata()) {
@@ -100,21 +100,22 @@ class Auth extends BaseController
         session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Username is not registered!</b></div>');
         $this->sesi = 400;
       }
-    }
-    $cek = $this->AuthModel->get_user($user);
-    if ($cek) {
-      if (password_verify($password, $cek['password'])) {
-        $token = base64_encode(random_bytes(32));
-        $this->_loginProcess($cek['username'], $token, $cek['last_login']);
-        return redirect()->to('/Dashboard');
+    } else {
+      $cek = $this->AuthModel->get_user($user);
+      if ($cek) {
+        if (password_verify($password, $cek['password'])) {
+          $token = base64_encode(random_bytes(32));
+          $this->_loginProcess($cek['username'], $token, $cek['last_login']);
+          return redirect()->to('/Dashboard');
+        } else {
+          session()->setFlashdata('inputs', $user);
+          session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Wrong password!</b></div>');
+          return redirect()->route('/');
+        }
       } else {
-        session()->setFlashdata('inputs', $user);
-        session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Wrong password!</b></div>');
+        session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Username is not registered!</b></div>');
         return redirect()->route('/');
       }
-    } else {
-      session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Username is not registered!</b></div>');
-      return redirect()->route('/');
     }
   }
 

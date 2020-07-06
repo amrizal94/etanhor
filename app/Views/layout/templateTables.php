@@ -1,11 +1,10 @@
-<?= $this->include('layout/header') ?>
+<?= $this->include('layout/headerTables') ?>
 
 <body class="hold-transition <?= $body; ?>">
   <!-- Site wrapper -->
   <div class="wrapper">
     <!-- Navbar -->
     <?= $this->include('layout/navbar') ?>
-    <!-- /.navbar -->
     <!-- Main Sidebar Container -->
 
     <?= $this->include('layout/sidebar') ?>
@@ -22,6 +21,11 @@
   <!-- ./wrapper -->
 
   <?= $this->include('layout/default'); ?>
+  <!-- DataTables -->
+  <script src="/template/plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="/template/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="/template/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/template/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
   <!-- AdminLTE for demo purposes -->
   <!-- <script src="/template/dist/js/demo.js"></script> -->
   <!-- Sweet Alert -->
@@ -50,6 +54,12 @@
             }, 1000)
           }
         });
+    });
+    $(function() {
+      $("#example1").DataTable({
+        "responsive": true,
+        "autoWidth": false,
+      });
     });
   </script>
 </body>

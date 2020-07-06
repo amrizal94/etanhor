@@ -2,21 +2,15 @@
 
 namespace App\Controllers;
 
-
-
-class Dashboard extends BaseController
+class Ajuan extends BaseController
 {
-
-  protected $AuthModel;
   public function __construct()
   {
     // helper('form');
-
     // $this->form_validation = \Config\Services::validation();
-    // $this->AuthModel = new AuthModel();
 
     $this->data =  [
-      'title' => 'Dashboard',
+      'title' => 'Ajuan',
       'body' => 'sidebar-mini',
       'project' => 'Etanhor'
     ];
@@ -33,8 +27,7 @@ class Dashboard extends BaseController
     ];
 
     $data = array_merge($data, $this->data);
-    $data = array_merge($data, $this->sesi);
-    return view('dashboard_v', $data);
+    return view('ajuan/view', $data);
   }
 
   //--------------------------------------------------------------------

@@ -8,7 +8,6 @@ class AuthModel extends Model
 {
   protected $table      = 'd_user';
   protected $allowedFields = ['last_login', 'ip_login', 'token'];
-  // protected $allowedFields = ['ip_login'];
   protected $primaryKey = 'username';
 
   protected $useTimestamps = true;
@@ -20,7 +19,6 @@ class AuthModel extends Model
     }
 
     if ($user && $data) {
-      // return $data;
       $this->update(['username' => $user], $data);
     }
   }
