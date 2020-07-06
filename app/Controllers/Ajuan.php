@@ -27,7 +27,7 @@ class Ajuan extends BaseController
     ];
 
     $data = array_merge($data, $this->data);
-    return view('ajuan/view', $data);
+    return view('ajuan/list', $data);
   }
 
   //--------------------------------------------------------------------

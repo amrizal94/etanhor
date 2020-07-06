@@ -53,7 +53,10 @@ class BaseController extends Controller
 			$this->sesi = false;
 		}
 		if (!$this->sesi) {
-			session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Please Login</b></div>');
+			$message = session()->getFlashdata('message');
+			if (!$message) {
+				session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Please Login</b></div>');
+			}
 			$this->sesi = 400;
 		} else {
 			$cek = $this->AuthModel->get_user($this->sesi['username']);

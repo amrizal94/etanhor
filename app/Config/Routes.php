@@ -36,6 +36,8 @@ $routes->add('/auth/index', 'Auth::index');
 $routes->add('/auth', 'Auth::auth');
 $routes->add('/auth/(:any)', 'Auth::auth');
 
+
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing

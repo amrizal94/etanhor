@@ -26,30 +26,10 @@
   <!-- <script src="/template/dist/js/demo.js"></script> -->
   <!-- Sweet Alert -->
   <script src="/node_modules/sweetalert/dist/sweetalert.min.js"></script>
+  <?= $this->include('layout/logout_js'); ?>
   <script>
     $(document).ready(function() {
       // console.log("ready!");
-
-    });
-    $('#logout').click(function() {
-
-      swal({
-          title: "Logout",
-          text: "Are you sure?",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true,
-        })
-        .then((willDelete) => {
-          if (willDelete) {
-            swal("You have been logged out.", {
-              icon: "success",
-            });
-            setTimeout(function() {
-              document.location.href = "<?= '/logout'; ?>";
-            }, 1000)
-          }
-        });
     });
   </script>
 </body>

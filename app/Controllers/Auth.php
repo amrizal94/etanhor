@@ -6,9 +6,6 @@ use App\Models\AuthModel;
 
 class Auth extends BaseController
 {
-  protected $AuthModel;
-  protected $data;
-  protected $sesi;
   public function __construct()
   {
     helper('form');
@@ -35,7 +32,7 @@ class Auth extends BaseController
     ];
 
     $data = array_merge($data, $this->data);
-    return view('auth_v', $data);
+    return view('user/login', $data);
   }
 
   public function auth()
@@ -71,7 +68,7 @@ class Auth extends BaseController
         session()->setFlashdata('password', '<div class ="alert alert-danger" role="alert"><b>' . $this->form_validation->getError('password') . '</b></div>');
       }
       // kembali ke halaman form
-      return view('auth_v', $data);
+      return view('user/login', $data);
     } else {
       return $this->_login($username, $password, false);
     }
@@ -90,13 +87,14 @@ class Auth extends BaseController
       if ($cek) {
         $cek = $cek['token'];
         if ($cek == $sesi['token']) {
-          $this->_loginProcess($sesi['username'], $sesi['token'], $sesi['last_login']);
+          $this->_loginProcess($sesi['username'], $sesi['token'], $sesi['level_user'], $sesi['last_login']);
           $this->sesi = 200;
         } else {
           session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Please Login</b></div>');
           $this->sesi = 400;
         }
       } else {
+
         session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Username is not registered!</b></div>');
         $this->sesi = 400;
       }
@@ -105,7 +103,7 @@ class Auth extends BaseController
       if ($cek) {
         if (password_verify($password, $cek['password'])) {
           $token = base64_encode(random_bytes(32));
-          $this->_loginProcess($cek['username'], $token, $cek['last_login']);
+          $this->_loginProcess($cek['username'], $token, $cek['level_user'], $cek['last_login']);
           return redirect()->to('/Dashboard');
         } else {
           session()->setFlashdata('inputs', $user);
@@ -113,13 +111,15 @@ class Auth extends BaseController
           return redirect()->route('/');
         }
       } else {
+
         session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Username is not registered!</b></div>');
+
         return redirect()->route('/');
       }
     }
   }
 
-  protected function _loginProcess($username = false, $token = false, $last_login = false)
+  protected function _loginProcess($username = false, $token = false, $level_user = false, $last_login = false)
   {
     if (!$last_login) {
       $last_login = date("Y-m-d H:i:s", now('Asia/Jakarta'));
@@ -127,9 +127,9 @@ class Auth extends BaseController
     $data = [
       'username' => $username,
       'token' => $token,
-      'last_login' => $last_login
+      'last_login' => $last_login,
+      'level_user' => $level_user
     ];
-    // dd($data);
     session()->setTempdata($data, 300);
     $ip_client = $_SERVER['REMOTE_ADDR'];
     if ($ip_client == "::1") {
