@@ -42,8 +42,17 @@ class BaseController extends Controller
 		//--------------------------------------------------------------------
 		// E.g.:
 		// $this->session = \Config\Services::session();
-		helper('form');
-		helper('date');
-		$this->Group = "Lasbon team";
+
+		$this->Group = "Lasbon Technology Indonesia | IT Solution For Your Bussines";
+		// dd(session()->getTempdata('token'));
+		// if (session()->getTempdata()) {
+		// $data = [
+		// 	'username' => session()->get('username'),
+		// 	'token' => session()->get('token'),
+		// 	'last_login' => session()->get('last_login')
+		// ];
+		// $this->Sesi = session()->getTempdata();
+		// dd($this->Sesi);
+		// }
 	}
 }

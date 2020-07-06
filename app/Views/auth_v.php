@@ -1,5 +1,6 @@
 <?= $this->extend('layout/templateAuth'); ?>
-<?= $this->section('conten'); ?>
+
+<?= $this->section('content'); ?>
 <div class="login-box">
   <div class="login-logo">
     <a href="../../index2.html"><b><?= $title; ?></b></a>
