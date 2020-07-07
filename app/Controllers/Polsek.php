@@ -9,14 +9,14 @@ class Polsek extends BaseController
 {
   protected $data;
   protected $PolresModel;
-  protected $PolsekModal;
+  protected $PolsekModel;
 
   public function __construct()
   {
     // helper('form');
     // $this->validasi = \Config\Services::validation();
     $this->PolresModel = new PolresModel();
-    $this->PolsekModal = new PolsekModel();
+    $this->PolsekModel = new PolsekModel();
 
     $this->data =  [
       'title' => 'Polsek',
@@ -36,7 +36,7 @@ class Polsek extends BaseController
     }
     $data = [
       'group' => $this->Group,
-      'data' => $this->PolsekModal->getPolsek(),
+      'data' => $this->PolsekModel->getPolsek(),
       'polres' => $this->PolresModel->getPolres()
     ];
     $data = array_merge($data, $this->data);
@@ -53,16 +53,22 @@ class Polsek extends BaseController
     $polsek  = htmlspecialchars($this->request->getVar('polsek'), true);
     $id  = htmlspecialchars($this->request->getVar('id_polsek'), true);
     $id_polres  = htmlspecialchars($this->request->getVar('id_polres'), true);
+    $slug_polres = $this->PolresModel->getPolres($id_polres);
+    if ($id_polres) {
+      $slug_polres = $slug_polres['slug_polres'];
+    }
+
     $polsek = strtoupper($polsek);
-    $pisah = explode("Polsek", $polsek);
+    $pisah = explode("POLSEK", $polsek);
     if (!isset($pisah[1])) {
       $polsek = strtoupper('polsek' . ' ' . $polsek);
     }
 
+    $slug_polsek = url_title($polsek, '-', true);
 
 
     if ($id) {
-      $polseklama = $this->PolsekModal->getPolsek($id);
+      $polseklama = $this->PolsekModel->getPolsek($id);
       if (isset($polseklama)) {
         if ($polseklama['nama_polsek'] == $polsek) {
           $rule_polsek = 'required';
@@ -80,18 +86,21 @@ class Polsek extends BaseController
         return redirect()->to('/polsek');
       }
       $data = [
-        'nama_polsek' => $polsek
+        'nama_polsek' => $polsek,
+        'slug_polsek' => $slug_polsek
       ];
-      $this->PolsekModal->update($id, $data);
+      $this->PolsekModel->update($id, $data);
       session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully edited!</b></div>');
       return redirect()->to('/polsek');
     }
 
 
 
-    $this->PolsekModal->save([
+    $this->PolsekModel->save([
       'id_polres' => $id_polres,
-      'nama_polsek' => $polsek
+      'nama_polsek' => $polsek,
+      'slug_polres' => $slug_polres,
+      'slug_polsek' => $slug_polsek
     ]);
     session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully added!</b></div>');
     return redirect()->to('/polsek');
@@ -102,7 +111,7 @@ class Polsek extends BaseController
     if ($this->status === 400) {
       return redirect()->route('/');
     }
-    $this->PolsekModal->delete($id);
+    $this->PolsekModel->delete($id);
     session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully deleted!</b></div>');
     return redirect()->to('/polsek');
   }

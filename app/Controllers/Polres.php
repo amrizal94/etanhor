@@ -54,8 +54,10 @@ class Polres extends BaseController
     $id  = htmlspecialchars($this->request->getVar('id_polres'), true);
     $id_polda  = htmlspecialchars($this->request->getVar('id_polda'), true);
     $slug_polda = $this->PoldaModel->getPolda($id_polda);
-    $slug_polda = $slug_polda['slug_polda'];
-    // dd($slug_polda);
+    if ($id_polda) {
+      $slug_polda = $slug_polda['slug_polda'];
+    }
+
     $polres = strtoupper($polres);
     $pisah = explode("POLRES", $polres);
     if (!isset($pisah[1])) {
