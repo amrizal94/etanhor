@@ -26,7 +26,7 @@
   <!-- <script src="/template/dist/js/demo.js"></script> -->
   <!-- Sweet Alert -->
   <script src="/node_modules/sweetalert/dist/sweetalert.min.js"></script>
-  <?= $this->include('layout/logout_js'); ?>
+  <?= $this->include('layout/sweetAlert/logout_js'); ?>
   <script>
     $(document).ready(function() {
       // console.log("ready!");

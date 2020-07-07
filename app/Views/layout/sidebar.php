@@ -65,6 +65,44 @@
             </li>
           </ul>
         </li>
+        <li class="nav-header">REGION</li>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon far fa-user"></i>
+            <span class="badge badge-info right">10</span>
+            <p>
+              REGION
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="/polda" class="nav-link">
+                <i class="nav-icon far fa-user"></i>
+                <p>
+                  POLDA
+                  <span class="badge badge-info right">7</span>
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="../gallery.html" class="nav-link">
+                <i class="nav-icon fas fa-lock"></i>
+                <p>
+                  POLRES
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="../gallery.html" class="nav-link">
+                <i class="nav-icon fas fa-lock"></i>
+                <p>
+                  POLSEK
+                </p>
+              </a>
+            </li>
+          </ul>
+        </li>
         <li class="nav-header">USER</li>
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
@@ -104,6 +142,7 @@
             </p>
           </a>
         </li>
+
 
       </ul>
     </nav>

@@ -21,17 +21,12 @@
   <!-- ./wrapper -->
 
   <?= $this->include('layout/default'); ?>
-  <!-- DataTables -->
-  <script src="/template/plugins/datatables/jquery.dataTables.min.js"></script>
-  <script src="/template/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-  <script src="/template/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-  <script src="/template/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <?= $this->include('layout/tables_js'); ?>
   <!-- AdminLTE for demo purposes -->
   <!-- <script src="/template/dist/js/demo.js"></script> -->
   <!-- Sweet Alert -->
   <script src="/node_modules/sweetalert/dist/sweetalert.min.js"></script>
   <?= $this->include('layout/sweetAlert/logout_js'); ?>
-
   <script>
     $(document).ready(function() {
       // console.log("ready!");
@@ -42,6 +37,14 @@
         "responsive": true,
         "autoWidth": false,
       });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      // console.log("ready!");
+      $('.alert').hide();
+      $('.alert').fadeIn(1000);
+      $('.alert').delay(1000).fadeOut(1000);
     });
   </script>
 </body>

@@ -3,7 +3,7 @@
 <?= $this->section('content'); ?>
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b><?= $title; ?></b></a>
+    <a href="/"><b><?= $title; ?></b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -11,16 +11,11 @@
       <!-- <p class="login-box-msg">Sign in to start your session</p> -->
       <?php
       $inputs = session()->getFlashdata('inputs');
-      if (isset($inputs)) {
-
-
-        $iuser = $inputs;
-      }
-      // dd($inputs);
+      if (isset($inputs)) $iuser = $inputs;
       $username = session()->getFlashdata('username');
       $password = session()->getFlashdata('password');
       $message = session()->getFlashdata('message');
-
+      session()->destroy();
       ?>
 
       <?php

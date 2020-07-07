@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 class Ajuan extends BaseController
 {
+  protected $data;
   public function __construct()
   {
     // helper('form');

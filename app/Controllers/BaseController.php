@@ -49,27 +49,31 @@ class BaseController extends Controller
 		// <--Vertifikasi login -->
 		if (session()->getTempdata()) {
 			$this->sesi = session()->getTempdata();
+			$this->status = 200;
 		} else {
 			$this->sesi = false;
+			$this->status = 400;
 		}
 		if (!$this->sesi) {
 			$message = session()->getFlashdata('message');
 			if (!$message) {
 				session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Please Login</b></div>');
 			}
-			$this->sesi = 400;
+			$this->status = 400;
 		} else {
 			$cek = $this->AuthModel->get_user($this->sesi['username']);
-			// dd($cek);
+
 			if ($cek) {
 				$cek = $cek['token'];
 				if (!$cek == $this->sesi['token']) {
 					session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Please Login</b></div>');
-					$this->sesi = 400;
+					$this->status = 400;
+				} else {
+					$this->status = 200;
 				}
 			} else {
 				session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Username is not registered!</b></div>');
-				$this->sesi = 400;
+				$this->status = 400;
 			}
 		}
 		// <--Vertifikasi login -->

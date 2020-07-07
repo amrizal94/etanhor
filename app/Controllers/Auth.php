@@ -2,30 +2,27 @@
 
 namespace App\Controllers;
 
-use App\Models\AuthModel;
 
 class Auth extends BaseController
 {
+  protected $form_validation;
+  protected $data;
   public function __construct()
   {
     helper('form');
     helper('date');
     $this->form_validation = \Config\Services::validation();
-    $this->AuthModel = new AuthModel();
 
     $this->data =  [
       'title' => 'Login',
       'body' => 'login-page'
     ];
-    if (session()->getTempdata()) {
-      $this->sesi = session()->getTempdata();
-      return $this->_login("sesi", "sesi", $this->sesi);
-    }
   }
   public function index()
   {
-    if ($this->sesi === 200) {
-      return redirect()->to('/Dashboard');
+    if ($this->status === 200) {
+
+      return redirect()->to('/dashboard');
     }
     $data = [
       'group' => $this->Group
@@ -37,10 +34,9 @@ class Auth extends BaseController
 
   public function auth()
   {
-    if ($this->sesi === 200) {
-      return redirect()->to('/Dashboard');
+    if ($this->status === 200) {
+      return redirect()->to('/dashboard');
     }
-
     $signin = $this->request->getPost('signin');
     if (isset($signin)) {
       $username  = $this->request->getPost('username');
@@ -70,6 +66,7 @@ class Auth extends BaseController
       // kembali ke halaman form
       return view('user/login', $data);
     } else {
+
       return $this->_login($username, $password, false);
     }
   }
@@ -86,55 +83,80 @@ class Auth extends BaseController
       $cek = $this->AuthModel->get_user($sesi['username']);
       if ($cek) {
         $cek = $cek['token'];
-        if ($cek == $sesi['token']) {
-          $this->_loginProcess($sesi['username'], $sesi['token'], $sesi['level_user'], $sesi['last_login']);
-          $this->sesi = 200;
+        // dd(password_verify($sesi['token'], $cek));
+        if (password_verify($sesi['token'], $cek)) {
+
+          $data = [
+            'id_polsek' => $sesi['id_polsek'],
+            'id_polres' => $sesi['id_polres'],
+            'level_user' => $sesi['level_user'],
+            'nama_user' => $sesi['nama_user'],
+            'username' => $sesi['username'],
+            'token' => $sesi['token'],
+            'last_login' => $sesi['last_login']
+          ];
+
+          $this->_loginProcess($data, $sesi['last_login']);
+          $this->status = 200;
         } else {
           session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Please Login</b></div>');
-          $this->sesi = 400;
+          $this->status = 400;
         }
       } else {
-
         session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Username is not registered!</b></div>');
-        $this->sesi = 400;
+        $this->status = 400;
       }
     } else {
+
       $cek = $this->AuthModel->get_user($user);
       if ($cek) {
         if (password_verify($password, $cek['password'])) {
           $token = base64_encode(random_bytes(32));
-          $this->_loginProcess($cek['username'], $token, $cek['level_user'], $cek['last_login']);
-          return redirect()->to('/Dashboard');
+          $data = [
+            'id_polsek' => $cek['id_polsek'],
+            'id_polres' => $cek['id_polres'],
+            'level_user' => $cek['level_user'],
+            'nama_user' => $cek['nama_user'],
+            'username' => $cek['username'],
+            'token' => $token,
+            'last_login' => $cek['last_login']
+          ];
+          $this->_loginProcess($data);
+          return redirect()->to('/dashboard');
         } else {
           session()->setFlashdata('inputs', $user);
           session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Wrong password!</b></div>');
           return redirect()->route('/');
         }
       } else {
-
         session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>Username is not registered!</b></div>');
-
         return redirect()->route('/');
       }
     }
   }
 
-  protected function _loginProcess($username = false, $token = false, $level_user = false, $last_login = false)
+  protected function _loginProcess($data = false, $last_login = false)
   {
     if (!$last_login) {
       $last_login = date("Y-m-d H:i:s", now('Asia/Jakarta'));
     }
+
+    $username = $data['username'];
     $data = [
-      'username' => $username,
-      'token' => $token,
-      'last_login' => $last_login,
-      'level_user' => $level_user
+      'id_polsek' => $data['id_polsek'],
+      'id_polres' => $data['id_polres'],
+      'level_user' => $data['level_user'],
+      'nama_user' => $data['nama_user'],
+      'username' => $data['username'],
+      'token' => $data['token'],
+      'last_login' => $last_login
     ];
     session()->setTempdata($data, 300);
     $ip_client = $_SERVER['REMOTE_ADDR'];
     if ($ip_client == "::1") {
       $ip_client = "localhost";
     }
+    $token = password_hash($data['token'], PASSWORD_DEFAULT);
     $data = array(
       'last_login' => $last_login,
       'ip_login' => $ip_client,
@@ -143,6 +165,11 @@ class Auth extends BaseController
     $this->AuthModel->get_user($username, $data);
   }
 
+  public function logout()
+  {
+    session()->destroy();
+    return redirect()->route('/');
+  }
   //--------------------------------------------------------------------
 
 }

@@ -32,9 +32,25 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Auth::index');
-$routes->add('/auth/index', 'Auth::index');
-$routes->add('/auth', 'Auth::auth');
+// $routes->add('/auth/index', 'Auth::index');
+$routes->post('/auth', 'Auth::auth');
+$routes->get('/auth', 'Auth');
+$routes->get('/Auth', 'Auth');
 $routes->add('/auth/(:any)', 'Auth::auth');
+$routes->get('/dashboard', 'Dashboard::index');
+$routes->get('/Dashboard', 'Dashboard::index');
+$routes->get('/ajuan', 'Ajuan::index');
+$routes->get('/Ajuan', 'Ajuan::index');
+$routes->get('/logout', 'Auth::logout');
+$routes->get('/Logout', 'Auth::logout');
+$routes->get('/User', 'User::index');
+$routes->get('/user', 'User::index');
+$routes->get('/Polda', 'Polda::index');
+$routes->get('/polda', 'Polda::index');
+$routes->post('/Polda/save', 'Polda::save');
+$routes->delete('/polda/(:num)', 'Polda::delete/$1');
+
+$routes->add('/(:any)', 'Auth');
 
 
 

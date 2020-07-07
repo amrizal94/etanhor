@@ -6,8 +6,7 @@ namespace App\Controllers;
 
 class Dashboard extends BaseController
 {
-
-  protected $AuthModel;
+  protected $data;
   public function __construct()
   {
     // helper('form');
@@ -24,7 +23,7 @@ class Dashboard extends BaseController
 
   public function index()
   {
-    if ($this->sesi === 400) {
+    if ($this->status === 400) {
       return redirect()->route('/');
     }
 

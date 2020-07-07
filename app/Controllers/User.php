@@ -6,6 +6,8 @@ use App\Models\UselLevelModal;
 
 class User extends BaseController
 {
+  protected $data;
+  protected $UselLevelModal;
   public function __construct()
   {
 
@@ -39,10 +41,6 @@ class User extends BaseController
     if ($this->sesi === 400) {
       return redirect()->route('/');
     }
-    $data = [
-      'title' => 'Form tambah data user'
-    ];
-    return view('user/create', $data);
   }
   //--------------------------------------------------------------------
 
