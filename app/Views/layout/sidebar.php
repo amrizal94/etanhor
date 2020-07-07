@@ -86,7 +86,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="../gallery.html" class="nav-link">
+              <a href="/polres" class="nav-link">
                 <i class="nav-icon fas fa-lock"></i>
                 <p>
                   POLRES
@@ -94,7 +94,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="../gallery.html" class="nav-link">
+              <a href="/polsek" class="nav-link">
                 <i class="nav-icon fas fa-lock"></i>
                 <p>
                   POLSEK

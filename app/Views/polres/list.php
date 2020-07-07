@@ -1,4 +1,4 @@
-<?= $this->extend('layout/templatePolda'); ?>
+<?= $this->extend('layout/templatePolres'); ?>
 <?= $this->section('content'); ?>
 <?php
 $message = session()->getFlashdata('message');
@@ -22,7 +22,7 @@ $message = session()->getFlashdata('message');
       <div class="row">
         <div class="col-12">
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#poldaAdd">
+          <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#polresAdd">
             <i class="far fa-plus-square"></i> Add
           </button>
           <!-- /.card -->
@@ -36,6 +36,7 @@ $message = session()->getFlashdata('message');
                 <thead>
                   <tr>
                     <th>Nomer</th>
+                    <th>Polda</th>
                     <th><?= $title; ?></th>
                     <th>#</th>
                   </tr>
@@ -48,9 +49,10 @@ $message = session()->getFlashdata('message');
                     <tr>
                       <td><?= $i++; ?></td>
                       <td><?= $d['nama_polda']; ?></td>
+                      <td><?= $d['nama_polres']; ?></td>
                       <td>
-                        <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#poldaEdit<?= $d['id_polda']; ?>">Edit</button>
-                        <form action="/polda/<?= $d['id_polda']; ?>" method="POST" class="d-inline">
+                        <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#polresEdit<?= $d['id_polres']; ?>">Edit</button>
+                        <form action="/polres/<?= $d['id_polres']; ?>" method="POST" class="d-inline">
                           <?= csrf_field(); ?>
                           <input type="hidden" name="_method" value="DELETE">
                           <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure to delete?')">Hapus</button>
@@ -62,6 +64,7 @@ $message = session()->getFlashdata('message');
                 <tfoot>
                   <tr>
                     <th>Nomer</th>
+                    <th>Polda</th>
                     <th><?= $title; ?></th>
                     <th>#</th>
                   </tr>
@@ -84,23 +87,33 @@ $message = session()->getFlashdata('message');
 
 
 <!-- Modal -->
-<div class="modal fade" id="poldaAdd" tabindex="-1" role="dialog" aria-labelledby="poldaAddLabel" aria-hidden="true">
+<div class="modal fade" id="polresAdd" tabindex="-1" role="dialog" aria-labelledby="polresAddLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="poldaAddLabel"><?= $mtitleAdd; ?></h5>
+        <h5 class="modal-title" id="polresAddLabel"><?= $mtitleAdd; ?></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <!-- form start -->
-      <form role="form" method="POST" action="/Polda/save">
+      <form role="form" method="POST" action="/Polres/save">
         <?= csrf_field(); ?>
 
         <div class="modal-body">
 
           <div class="card-body">
-
+            <div class="form-group">
+              <label>Polda</label>
+              <select class="form-control select2" style="width: 100%;" name="id_polda">
+                <option selected="selected" value="0">Select</option>
+                <?php
+                foreach ($polda as $l) :
+                ?>
+                  <option value="<?= $l['id_polda']; ?>"><?= $l['nama_polda']; ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
             <div class="form-group">
               <label for="<?= $title; ?>"><?= $title; ?></label>
               <input type="text" class="form-control" name="<?= strtolower($title); ?>" id="<?= strtolower($title); ?>" placeholder="<?= $title; ?>">
@@ -110,7 +123,7 @@ $message = session()->getFlashdata('message');
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" name="addpolda" class="btn btn-primary">Add</button>
+          <button type="submit" name="addpolres" class="btn btn-primary">Add</button>
         </div>
       </form>
     </div>
@@ -120,33 +133,33 @@ $message = session()->getFlashdata('message');
 $i = 1;
 foreach ($data as $d) :
 ?>
-  <div class="modal fade" id="poldaEdit<?= $d['id_polda']; ?>" tabindex="-1" role="dialog" aria-labelledby="poldaEditLabel" aria-hidden="true">
+  <div class="modal fade" id="polresEdit<?= $d['id_polres']; ?>" tabindex="-1" role="dialog" aria-labelledby="polresEditLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="poldaEditLabel"><?= $mtitleEdit; ?></h5>
+          <h5 class="modal-title" id="polresEditLabel"><?= $mtitleEdit; ?></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <!-- form start -->
-        <form role="form" method="POST" action="/Polda/save">
+        <form role="form" method="POST" action="/Polres/save">
           <?= csrf_field(); ?>
-          <input type="hidden" name="id_polda" value="<?= $d['id_polda']; ?>">
+          <input type="hidden" name="id_polres" value="<?= $d['id_polres']; ?>">
           <div class="modal-body">
 
             <div class="card-body">
 
               <div class="form-group">
                 <label for="<?= $title; ?>"><?= $title; ?></label>
-                <input type="text" class="form-control" value="<?= $d['nama_polda']; ?>" name="<?= strtolower($title); ?>" id="<?= strtolower($title); ?>" placeholder="<?= $title; ?>">
+                <input type="text" class="form-control" value="<?= $d['nama_polres']; ?>" name="<?= strtolower($title); ?>" id="<?= strtolower($title); ?>" placeholder="<?= $title; ?>">
               </div>
             </div>
             <!-- /.card-body -->
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" name="editpolda" class="btn btn-primary">Save changes</button>
+            <button type="submit" name="editpolres" class="btn btn-primary">Save changes</button>
           </div>
         </form>
       </div>

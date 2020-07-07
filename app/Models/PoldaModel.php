@@ -17,5 +17,6 @@ class PoldaModel extends Model
     if ($id) {
       return $this->where(['id_polda' => $id])->first();
     }
+    return $this->findAll();
   }
 }

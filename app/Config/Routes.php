@@ -45,11 +45,28 @@ $routes->get('/logout', 'Auth::logout');
 $routes->get('/Logout', 'Auth::logout');
 $routes->get('/User', 'User::index');
 $routes->get('/user', 'User::index');
+
+// polda
 $routes->get('/Polda', 'Polda::index');
 $routes->get('/polda', 'Polda::index');
 $routes->post('/Polda/save', 'Polda::save');
 $routes->delete('/polda/(:num)', 'Polda::delete/$1');
 
+// polres
+$routes->get('/Polres', 'Polres::index');
+$routes->get('/polres', 'Polres::index');
+$routes->post('/Polres/save', 'Polres::save');
+$routes->delete('/polres/(:num)', 'Polres::delete/$1');
+
+// polsek
+$routes->get('/Polsek', 'Polsek::index');
+$routes->get('/polsek', 'Polsek::index');
+$routes->post('/Polsek/save', 'Polsek::save');
+$routes->delete('/polsek/(:num)', 'Polsek::delete/$1');
+
+$routes->get('/Polda/save', 'Auth');
+$routes->get('/Polres/save', 'Auth');
+$routes->get('/Polsek/save', 'Auth');
 $routes->add('/(:any)', 'Auth');
 
 

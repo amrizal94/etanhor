@@ -3,24 +3,27 @@
 namespace App\Controllers;
 
 use App\Models\PoldaModel;
+use App\Models\PolresModal;
 
-
-class Polda extends BaseController
+class Polres extends BaseController
 {
   protected $data;
   protected $PoldaModel;
+  protected $PolresModal;
+
   public function __construct()
   {
     // helper('form');
     // $this->validasi = \Config\Services::validation();
     $this->PoldaModel = new PoldaModel();
+    $this->PolresModal = new PolresModal();
 
     $this->data =  [
-      'title' => 'Polda',
+      'title' => 'Polres',
       'body' => 'sidebar-mini',
       'project' => 'Etanhor',
-      'mtitleAdd' => 'Form tambah Polda',
-      'mtitleEdit' => 'Form edit Polda'
+      'mtitleAdd' => 'Form tambah Polres',
+      'mtitleEdit' => 'Form edit Polres'
 
     ];
   }
@@ -33,60 +36,65 @@ class Polda extends BaseController
     }
     $data = [
       'group' => $this->Group,
-      'data' => $this->PoldaModel->getPolda()
+      'data' => $this->PolresModal->getPolres(),
+      'polda' => $this->PoldaModel->getPolda()
     ];
     $data = array_merge($data, $this->data);
-    return view('polda/list', $data);
+    return view('polres/list', $data);
   }
 
 
   public function save()
   {
     if ($this->status === 400) {
-      return redirect()->to('/polda');
+      return redirect()->to('/polres');
     }
-
-    $polda  = htmlspecialchars($this->request->getVar('polda'), true);
-    $id  = htmlspecialchars($this->request->getVar('id_polda'), true);
-    $polda = strtoupper($polda);
-    $pisah = explode("POLDA", $polda);
+    // dd($this->request->getVar());
+    $polres  = htmlspecialchars($this->request->getVar('polres'), true);
+    $id  = htmlspecialchars($this->request->getVar('id_polres'), true);
+    $id_polda  = htmlspecialchars($this->request->getVar('id_polda'), true);
+    $polres = strtoupper($polres);
+    $pisah = explode("POLRES", $polres);
     if (!isset($pisah[1])) {
-      $polda = strtoupper('polda' . ' ' . $polda);
+      $polres = strtoupper('polres' . ' ' . $polres);
     }
 
 
 
     if ($id) {
-      $poldalama = $this->PoldaModel->getPolda($id);
-      if (isset($poldalama)) {
-        if ($poldalama['nama_polda'] == $polda) {
-          $rule_polda = 'required';
+      $polreslama = $this->PolresModal->getPolres($id);
+      if (isset($polreslama)) {
+        if ($polreslama['nama_polres'] == $polres) {
+          $rule_polres = 'required';
         } else {
-          $rule_polda = 'required|is_unique[d_polda.nama_polda]';
+          $rule_polres = 'required|is_unique[d_polres.nama_polres]';
         }
       }
 
       if (!$this->validate([
-        'polda' => $rule_polda
+        'polres' => $rule_polres
       ])) {
         $validasi = \Config\Services::validation();
-        $validasi = $validasi->getError('polda');
+        $validasi = $validasi->getError('polres');
         session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>' . $validasi . '</b></div>');
-        return redirect()->to('/polda');
+        return redirect()->to('/polres');
       }
-      $this->PoldaModel->save([
-        'id_polda' => $id,
-        'nama_polda' => $polda
-      ]);
+      $data = [
+        'nama_polres' => $polres
+      ];
+      $this->PolresModal->update($id, $data);
       session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully edited!</b></div>');
-      return redirect()->to('/polda');
+      return redirect()->to('/polres');
     }
 
-    $this->PoldaModel->save([
-      'nama_polda' => $polda
+
+
+    $this->PolresModal->save([
+      'id_polda' => $id_polda,
+      'nama_polres' => $polres
     ]);
     session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully added!</b></div>');
-    return redirect()->to('/polda');
+    return redirect()->to('/polres');
   }
 
   public function delete($id)
@@ -94,9 +102,9 @@ class Polda extends BaseController
     if ($this->status === 400) {
       return redirect()->route('/');
     }
-    $this->PoldaModel->delete($id);
+    $this->PolresModal->delete($id);
     session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully deleted!</b></div>');
-    return redirect()->to('/polda');
+    return redirect()->to('/polres');
   }
 
   //--------------------------------------------------------------------
