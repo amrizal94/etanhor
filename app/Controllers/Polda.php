@@ -53,7 +53,7 @@ class Polda extends BaseController
     if (!isset($pisah[1])) {
       $polda = strtoupper('polda' . ' ' . $polda);
     }
-
+    $slug_polda = url_title($polda, '-', true);
 
 
     if ($id) {
@@ -74,16 +74,19 @@ class Polda extends BaseController
         session()->setFlashdata('message', '<div class ="alert alert-danger" role="alert"><b>' . $validasi . '</b></div>');
         return redirect()->to('/polda');
       }
+
       $this->PoldaModel->save([
         'id_polda' => $id,
+        'slug_polda' => $slug_polda,
         'nama_polda' => $polda
       ]);
       session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully edited!</b></div>');
       return redirect()->to('/polda');
     }
-
+    // dd($slug_polda);
     $this->PoldaModel->save([
-      'nama_polda' => $polda
+      'nama_polda' => $polda,
+      'slug_polda' => $slug_polda
     ]);
     session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully added!</b></div>');
     return redirect()->to('/polda');

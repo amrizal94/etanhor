@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class PoldaModel extends Model
 {
   protected $table      = 'd_polda';
-  protected $allowedFields = ['nama_polda'];
+  protected $allowedFields = ['nama_polda', 'slug_polda'];
   protected $primaryKey = 'id_polda';
 
   protected $useTimestamps = true;

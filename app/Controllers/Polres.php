@@ -3,20 +3,20 @@
 namespace App\Controllers;
 
 use App\Models\PoldaModel;
-use App\Models\PolresModal;
+use App\Models\PolresModel;
 
 class Polres extends BaseController
 {
   protected $data;
   protected $PoldaModel;
-  protected $PolresModal;
+  protected $PolresModel;
 
   public function __construct()
   {
     // helper('form');
     // $this->validasi = \Config\Services::validation();
     $this->PoldaModel = new PoldaModel();
-    $this->PolresModal = new PolresModal();
+    $this->PolresModel = new PolresModel();
 
     $this->data =  [
       'title' => 'Polres',
@@ -36,7 +36,7 @@ class Polres extends BaseController
     }
     $data = [
       'group' => $this->Group,
-      'data' => $this->PolresModal->getPolres(),
+      'data' => $this->PolresModel->getPolres(),
       'polda' => $this->PoldaModel->getPolda()
     ];
     $data = array_merge($data, $this->data);
@@ -53,16 +53,19 @@ class Polres extends BaseController
     $polres  = htmlspecialchars($this->request->getVar('polres'), true);
     $id  = htmlspecialchars($this->request->getVar('id_polres'), true);
     $id_polda  = htmlspecialchars($this->request->getVar('id_polda'), true);
+    $slug_polda = $this->PoldaModel->getPolda($id_polda);
+    $slug_polda = $slug_polda['slug_polda'];
+    // dd($slug_polda);
     $polres = strtoupper($polres);
     $pisah = explode("POLRES", $polres);
     if (!isset($pisah[1])) {
       $polres = strtoupper('polres' . ' ' . $polres);
     }
-
+    $slug_polres = url_title($polres, '-', true);
 
 
     if ($id) {
-      $polreslama = $this->PolresModal->getPolres($id);
+      $polreslama = $this->PolresModel->getPolres($id);
       if (isset($polreslama)) {
         if ($polreslama['nama_polres'] == $polres) {
           $rule_polres = 'required';
@@ -80,18 +83,21 @@ class Polres extends BaseController
         return redirect()->to('/polres');
       }
       $data = [
-        'nama_polres' => $polres
+        'nama_polres' => $polres,
+        'slug_polres' => $slug_polres
       ];
-      $this->PolresModal->update($id, $data);
+      $this->PolresModel->update($id, $data);
       session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully edited!</b></div>');
       return redirect()->to('/polres');
     }
 
 
 
-    $this->PolresModal->save([
+    $this->PolresModel->save([
       'id_polda' => $id_polda,
-      'nama_polres' => $polres
+      'nama_polres' => $polres,
+      'slug_polda' => $slug_polda,
+      'slug_polres' => $slug_polres
     ]);
     session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully added!</b></div>');
     return redirect()->to('/polres');
@@ -102,7 +108,7 @@ class Polres extends BaseController
     if ($this->status === 400) {
       return redirect()->route('/');
     }
-    $this->PolresModal->delete($id);
+    $this->PolresModel->delete($id);
     session()->setFlashdata('message', '<div class ="alert alert-success" role="alert"><b>successfully deleted!</b></div>');
     return redirect()->to('/polres');
   }
